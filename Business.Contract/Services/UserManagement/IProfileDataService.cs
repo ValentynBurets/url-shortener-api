@@ -10,6 +10,8 @@ namespace Business.Contract.Services.UserManagement
         public Task<PersonInfoDTO> GetUserProfileInfoByIdLink(Guid idLink);
         public Task<PersonInfoDTO> GetUserProfileInfoById(Guid id);
         public Task<PersonInfoDTO> GetAdminProfileInfoById(Guid id);
+
+        public Task<IEnumerable<PersonInfoDTO>> GetAllUsersInfo();
         public Task<string> GetRole(Guid userId);
     }
 }

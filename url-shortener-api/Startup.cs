@@ -42,6 +42,18 @@ namespace url_shortener_api
 
             services.ConfigureJWT(Configuration);
 
+            //Define and use the default CORS policy to allow everyone and anything
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowAnyOrigin()
+                          .Build();
+                });
+            });
+
             services.AddControllers();
             services.AddRepository();
 
@@ -95,6 +107,12 @@ namespace url_shortener_api
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
+
+                app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
             }
             else
             {

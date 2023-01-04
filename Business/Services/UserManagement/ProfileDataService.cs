@@ -5,6 +5,8 @@ using Data.Contract.UnitOfWork;
 using Domain.Entity.Base;
 using Domain.Entity.Users;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Business.Services.UserManagement
@@ -51,6 +53,43 @@ namespace Business.Services.UserManagement
             profileInfo.Name = name;
 
             return profileInfo;
+        }
+
+        public async Task<IEnumerable<PersonInfoDTO>> GetAllUsersInfo()
+        {
+            List<PersonInfoDTO> userList = new List<PersonInfoDTO>();
+
+            var users = (await _unitOfWork.UserRepository.GetAll()).ToList();
+
+            if (users == null)
+            {
+                throw new Exception("Customer not found!");
+            }
+
+            foreach (var item in users)
+            {
+                var name = await _profileManager.GetNameByUserId(item.IdLink);
+                var user = _mapper.Map<User, PersonInfoDTO>(item);
+                user.Name = name;
+                userList.Add(user);
+            }
+
+            var admins = (await _unitOfWork.AdminRepository.GetAll()).ToList();
+
+            if (admins == null)
+            {
+                throw new Exception("Admins not found!");
+            }
+
+            foreach (var item in admins)
+            {
+                var name = await _profileManager.GetNameByUserId(item.IdLink);
+                var user = _mapper.Map<Admin, PersonInfoDTO>(item);
+                user.Name = name;
+                userList.Add(user);
+            }
+
+            return userList;
         }
 
         public async Task<PersonInfoDTO> GetAdminProfileInfoById(Guid id)
