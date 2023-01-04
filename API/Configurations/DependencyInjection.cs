@@ -17,12 +17,12 @@ namespace API.Configurations
             services.AddTransient<IAuthentificationUnitOfWork, AuthentificationUnitOfWork>();
 
             //add here new services
-            services.AddTransient<IUrlItemService, UrlItemService>();
-
-            services.AddTransient<IProfileRegistrationService, ProfileRegistrationService>();
             services.AddScoped<IAuthManager, AuthManager>();
             services.AddTransient<IProfileManager, ProfileManager<AuthorisationUser>>();
             services.AddTransient<IProfileDataService, ProfileDataService>();
+            services.AddTransient<IProfileRegistrationService, ProfileRegistrationService>();
+
+            services.AddTransient<IUrlItemService, UrlItemService>();
 
             return services;
         }

@@ -51,6 +51,8 @@ namespace API
                 });
             });
 
+            services.AddRepository();
+
             services.AddControllers();
 
             services.AddAutoMapper(typeof(MapperInitializer));
