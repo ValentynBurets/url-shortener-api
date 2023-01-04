@@ -55,9 +55,6 @@ namespace API
 
             services.AddControllers();
 
-            services.AddScoped<IAuthManager, AuthManager>();
-            services.AddTransient<IProfileRegistrationService, ProfileRegistrationService>();
-
             services.AddAutoMapper(typeof(MapperInitializer));
 
             services.AddSwaggerGen(c =>

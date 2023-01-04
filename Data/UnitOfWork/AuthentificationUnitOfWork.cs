@@ -8,18 +8,18 @@ namespace Data.UnitOfWork
 {
     public class AuthentificationUnitOfWork : IAuthentificationUnitOfWork
     {
-        private DBContext _landSellingContext;
+        private DBContext _dbContext;
         private IUserRepository _userRepository;
         private IAdminRepository _adminRepository;
 
         public AuthentificationUnitOfWork(DBContext domainDbContext)
         {
-            _landSellingContext = domainDbContext;
+            _dbContext = domainDbContext;
         }
-        public IUserRepository UserRepository => _userRepository ??= new UserRepository(_landSellingContext);
+        public IUserRepository UserRepository => _userRepository ??= new UserRepository(_dbContext);
 
-        public IAdminRepository AdminRepository => _adminRepository ??= new AdminRepository(_landSellingContext);
+        public IAdminRepository AdminRepository => _adminRepository ??= new AdminRepository(_dbContext);
 
-        public async Task<int> Save() => await _landSellingContext.SaveChangesAsync();
+        public async Task<int> Save() => await _dbContext.SaveChangesAsync();
     }
 }

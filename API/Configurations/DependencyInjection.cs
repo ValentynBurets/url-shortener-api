@@ -20,7 +20,7 @@ namespace API.Configurations
             services.AddTransient<IUrlItemService, UrlItemService>();
 
             services.AddTransient<IProfileRegistrationService, ProfileRegistrationService>();
-
+            services.AddScoped<IAuthManager, AuthManager>();
             services.AddTransient<IProfileManager, ProfileManager<AuthorisationUser>>();
             services.AddTransient<IProfileDataService, ProfileDataService>();
 
