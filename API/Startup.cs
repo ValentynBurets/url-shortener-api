@@ -1,6 +1,4 @@
 using API.Configurations;
-using Business.Contract.Services.UserManagement;
-using Business.Services.UserManagement;
 using Data.EF;
 using Data.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
