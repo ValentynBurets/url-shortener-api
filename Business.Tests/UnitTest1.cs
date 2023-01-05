@@ -5,7 +5,6 @@ using Business.Contract.Models.UserManagement;
 using Business.Services.UrlManagement;
 using Data.Contract.Repository.UrlItemManagement;
 using Data.Contract.UnitOfWork;
-using Domain.Entity.Base;
 using Domain.Entity.UrlManagement;
 using Moq;
 using NUnit.Framework;
@@ -44,6 +43,13 @@ namespace Business.Tests
             ShortUrl = "url"
         };
 
+        static ShortUrlItemDTO shortUrlItemDTO = new ShortUrlItemDTO()
+        {
+            Id = new Guid("b8e1f1c3-a156-4db7-9"),
+            Url = "testUrl",
+            ShortUrl = "url"
+        };
+
         static CreateUrlItemDTO createUrlItemDTO = new CreateUrlItemDTO()
         {
             Url = "testUrl",
@@ -60,6 +66,11 @@ namespace Business.Tests
             urlItemDTO
         };
 
+        IEnumerable<ShortUrlItemDTO> shortUrlItemDTOs = new List<ShortUrlItemDTO>()
+        {
+            shortUrlItemDTO
+        };
+
         [SetUp]
         public void Setup()
         {
@@ -67,7 +78,6 @@ namespace Business.Tests
                                                                                          uR.GetById(It.IsAny<Guid>()) == Task.FromResult(urlItem) &&
                                                                                          uR.GetAll() == Task.FromResult(urlItems) &&
                                                                                          uR.Remove(It.IsAny<UrlItem>()) == Task.CompletedTask);
-
 
             IUnitOfWork unitOfWork = Mock.Of<IUnitOfWork>(of => of.UrlItemRepository == stubUrlItemRepository &&
                                                                 of.UserRepository == null && 
@@ -103,7 +113,7 @@ namespace Business.Tests
             var result = urlItemService.GetAll();
 
             // Assert
-            Assert.That(result.Result as IEnumerable<UrlItemDTO>, Is.EqualTo(urlItemDTOs));
+            Assert.That(result.Result as IEnumerable<ShortUrlItemDTO>, Is.EqualTo(shortUrlItemDTOs));
         }
 
         [Test]

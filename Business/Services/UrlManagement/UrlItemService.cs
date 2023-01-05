@@ -59,16 +59,14 @@ namespace Business.Services.UrlManagement
             UrlItem urlItem = await _unitOfWork.UrlItemRepository.GetById(lotId);
             UrlItemDTO urlItemDTO = _mapper.Map<UrlItemDTO>(urlItem);
             Person person =  await _unitOfWork.UserRepository.GetById(urlItem.CreatorId);
-            urlItemDTO.Creator = _mapper.Map<PersonDTO>(person);
+            urlItemDTO.Creator = _mapper.Map<PersonInfoDTO>(person);
             return urlItemDTO;
         }
 
         public async Task<IEnumerable<ShortUrlItemDTO>> GetAll()
         {
             IEnumerable<UrlItem> urlItems = await _unitOfWork.UrlItemRepository.GetAll();
-            //fix here
             List<ShortUrlItemDTO> urlItemDTOs = (List<ShortUrlItemDTO>)urlItems.Select(item => _mapper.Map<ShortUrlItemDTO>(item));
-
             return urlItemDTOs;
         }
     }
