@@ -17,7 +17,7 @@ namespace Data.Repository.UrlManagement
 
         public async Task<bool> IsExist(string Url)
         {
-            var item = await _DbContext.UrlItems.Where(u => u.Url == Url).FirstAsync();
+            var item = await _DbContext.UrlItems.Where(u => u.Url == Url).FirstOrDefaultAsync(); 
             return item != null ? true : false;
         }
 

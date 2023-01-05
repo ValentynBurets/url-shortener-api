@@ -57,9 +57,32 @@ namespace API
 
             services.AddAutoMapper(typeof(MapperInitializer));
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(option =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Url Shortener WebAPI v1", Version = "v1" });
+                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter a valid token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                });
+                option.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
             });
 
             services.AddMvc(option =>
@@ -79,12 +102,6 @@ namespace API
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
-
-                app.UseCors(x => x
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true) // allow any origin
-                .AllowCredentials()); // allow credentials
             }
             else
             {
@@ -94,12 +111,22 @@ namespace API
                 app.UseHsts(); //adds the Strict-Transport-Security header.    
             }
 
+            //This middleware is used to redirects HTTP requests to HTTPS.  
             app.UseHttpsRedirection();
 
+            //This middleware is used to route requests.   
             app.UseRouting();
 
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
+
+            //This middleware is used to authorizes a user to access secure resources.  
             app.UseAuthorization();
 
+            //This middleware is used to add Razor Pages endpoints to the request pipeline.
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

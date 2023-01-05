@@ -56,7 +56,7 @@ namespace API.Controllers.UserManagement
             try
             {
                 var user = _mapper.Map<AuthorisationUser>(userModel);
-                user.UserName = userModel.Name;
+                user.UserName = userModel.Email;
 
                 var result = await _userManager.CreateAsync(user, userModel.Password);
                 if (!result.Succeeded)
@@ -66,7 +66,7 @@ namespace API.Controllers.UserManagement
 
                 await _userManager.AddToRoleAsync(user, role);
 
-                await _profileRegistrationService.CreateProfile(user, userModel.Name);
+                await _profileRegistrationService.CreateProfile(user);
 
                 if (!await _authManager.ValidateUser(userModel))
                 {

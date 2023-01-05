@@ -22,7 +22,6 @@ namespace Business.Tests
 
         static PersonInfoDTO personInfoDTO = new PersonInfoDTO()
         {
-            Name = "User1",
             Role = "User"
         };
 

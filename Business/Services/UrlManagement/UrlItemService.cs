@@ -66,7 +66,7 @@ namespace Business.Services.UrlManagement
         public async Task<IEnumerable<ShortUrlItemDTO>> GetAll()
         {
             IEnumerable<UrlItem> urlItems = await _unitOfWork.UrlItemRepository.GetAll();
-            List<ShortUrlItemDTO> urlItemDTOs = (List<ShortUrlItemDTO>)urlItems.Select(item => _mapper.Map<ShortUrlItemDTO>(item));
+            IEnumerable<ShortUrlItemDTO> urlItemDTOs = urlItems.Select(item => _mapper.Map<ShortUrlItemDTO>(item));
             return urlItemDTOs;
         }
     }

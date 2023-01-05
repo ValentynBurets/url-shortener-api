@@ -74,7 +74,7 @@ namespace Business.Services.UserManagement
 
         public async Task<bool> ValidateUser(PersonDTO userModel)
         {
-            _user = await _userManager.FindByNameAsync(userModel.Name);
+            _user = await _userManager.FindByNameAsync(userModel.Email);
             bool ok = (_user != null) && (await _userManager.CheckPasswordAsync(_user, userModel.Password));
             return ok;
         }

@@ -13,7 +13,6 @@ namespace Domain.Entity.Base
         }
 
         public Guid IdLink { get; set; }
-        public string Name { get; set; }
 
         public virtual ICollection<UrlItem> UrlItems { get; set; }
     }

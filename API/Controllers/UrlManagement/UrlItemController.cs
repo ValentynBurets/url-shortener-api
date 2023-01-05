@@ -51,7 +51,7 @@ namespace API.Controllers.UrlManagement
 
         [HttpGet]
         [Route("[action]")]
-        [AllowAnonymous]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetById(Guid urlItemId)
         {
             try

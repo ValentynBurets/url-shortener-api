@@ -27,14 +27,14 @@ namespace Business.Services.UserManagement
         public async Task<PersonInfoDTO> GetUserProfileInfoByIdLink(Guid idLink)
         {
             var customer = await _unitOfWork.UserRepository.FirstOrDefault(x => x.IdLink == idLink);
-            var name = await _profileManager.GetNameByUserId(idLink);
+            var email = await _profileManager.GetEmailByUserId(idLink);
             if (customer == null)
             {
                 throw new Exception("User with this id was not found!");
             }
 
             var profileInfo = _mapper.Map<Person, PersonInfoDTO>(customer);
-            profileInfo.Name = name;
+            profileInfo.Email = email;
 
             return profileInfo;
         }
@@ -43,14 +43,14 @@ namespace Business.Services.UserManagement
         {
             var idLink = await _unitOfWork.UserRepository.GeIdLinkById(id);
             var customer = await _unitOfWork.UserRepository.FirstOrDefault(x => x.Id == idLink);
-            var name = await _profileManager.GetNameByUserId(idLink);
+            var email = await _profileManager.GetEmailByUserId(idLink);
             if (customer == null)
             {
                 throw new Exception("User with this id was not found!");
             }
 
             var profileInfo = _mapper.Map<Person, PersonInfoDTO>(customer);
-            profileInfo.Name = name;
+            profileInfo.Email = email;
 
             return profileInfo;
         }
@@ -68,9 +68,9 @@ namespace Business.Services.UserManagement
 
             foreach (var item in users)
             {
-                var name = await _profileManager.GetNameByUserId(item.IdLink);
+                var email = await _profileManager.GetEmailByUserId(item.IdLink);
                 var user = _mapper.Map<User, PersonInfoDTO>(item);
-                user.Name = name;
+                user.Email = email;
                 userList.Add(user);
             }
 
@@ -83,9 +83,9 @@ namespace Business.Services.UserManagement
 
             foreach (var item in admins)
             {
-                var name = await _profileManager.GetNameByUserId(item.IdLink);
+                var email = await _profileManager.GetEmailByUserId(item.IdLink);
                 var user = _mapper.Map<Admin, PersonInfoDTO>(item);
-                user.Name = name;
+                user.Email = email;
                 userList.Add(user);
             }
 
@@ -95,7 +95,7 @@ namespace Business.Services.UserManagement
         public async Task<PersonInfoDTO> GetAdminProfileInfoById(Guid id)
         {
             var admin = await _unitOfWork.AdminRepository.FirstOrDefault(x => x.IdLink == id);
-            var name = await _profileManager.GetNameByUserId(id);
+            var email = await _profileManager.GetEmailByUserId(id);
 
             if (admin == null)
             {
@@ -103,7 +103,7 @@ namespace Business.Services.UserManagement
             }
 
             var profileInfo = _mapper.Map<Admin, PersonInfoDTO>(admin);
-            profileInfo.Name = name;
+            profileInfo.Email = email;
 
             return profileInfo;
         }

@@ -20,24 +20,18 @@ namespace Business.Services.UserManagement
             _userManager = userManager;
         }
 
-        public async Task<bool> CreateProfile(AuthorisationUser user, string Name)
+        public async Task<bool> CreateProfile(AuthorisationUser user)
         {
             IList<string> role = await _userManager.GetRolesAsync(user);
             if (role.Contains("User"))
             {
-                await _unitOfWork.UserRepository.Add(new User(Guid.Parse(user.Id))
-                {
-                    Name = Name
-                });
+                await _unitOfWork.UserRepository.Add(new User(Guid.Parse(user.Id)));
                 await _unitOfWork.Save();
                 return true;
             }
             else if (role.Contains("Admin"))
             {
-                await _unitOfWork.AdminRepository.Add(new Admin(Guid.Parse(user.Id))
-                {
-                    Name = Name
-                });
+                await _unitOfWork.AdminRepository.Add(new Admin(Guid.Parse(user.Id)));
                 await _unitOfWork.Save();
                 return true;
             }

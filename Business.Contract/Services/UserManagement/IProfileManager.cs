@@ -5,6 +5,6 @@ namespace Business.Contract.Services.UserManagement
 {
     public interface IProfileManager
     {
-        public Task<string> GetNameByUserId(Guid id);
+        public Task<string> GetEmailByUserId(Guid id);
     }
 }

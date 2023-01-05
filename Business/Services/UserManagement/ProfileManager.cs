@@ -21,7 +21,7 @@ namespace Business.Services.UserManagement
 
         }
 
-        public async Task<string> GetNameByUserId(Guid id)
+        public async Task<string> GetEmailByUserId(Guid id)
         {
             var user = await FindByIdAsync(id.ToString());
             if (user != null)
