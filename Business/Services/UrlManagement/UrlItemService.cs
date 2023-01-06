@@ -58,8 +58,6 @@ namespace Business.Services.UrlManagement
         {
             UrlItem urlItem = await _unitOfWork.UrlItemRepository.GetById(lotId);
             UrlItemDTO urlItemDTO = _mapper.Map<UrlItemDTO>(urlItem);
-            Person person =  await _unitOfWork.UserRepository.GetById(urlItem.CreatorId);
-            urlItemDTO.Creator = _mapper.Map<PersonInfoDTO>(person);
             return urlItemDTO;
         }
 
