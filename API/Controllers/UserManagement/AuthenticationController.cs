@@ -22,12 +22,8 @@ namespace API.Controllers.UserManagement
         private readonly IAuthManager _authManager;
         private readonly IProfileRegistrationService _profileRegistrationService;
 
-
         private readonly IProfileDataService _profileDataService;
         private readonly IProfileManager _profileManager;
-
-
-
 
         public AuthenticationController(
         UserManager<AuthorisationUser> userManager,

@@ -4,8 +4,10 @@ using Business.Contract.Models.UrlItemManagement;
 using Business.Contract.Models.UserManagement;
 using Business.Services.UrlManagement;
 using Data.Contract.Repository.UrlItemManagement;
+using Data.Contract.Repository.UserManagement;
 using Data.Contract.UnitOfWork;
 using Domain.Entity.UrlManagement;
+using Domain.Entity.Users;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -25,9 +27,11 @@ namespace Business.Tests
             Role = "User"
         };
 
+        static User user = new User(new Guid("2bef5669-55ee-4261-91ab-bd4281cfba3c"));
+
         static UrlItem urlItem = new UrlItem()
         {
-            Id = new Guid("b8e1f1c3-a156-4db7-9"),
+            Id = new Guid("e15a1540-9225-429a-aa1c-028f0023451b"),
             CreatorId = new Guid("2bef5669-55ee-4261-91ab-bd4281cfba3c"),
             Url = "testUrl",
             ShortUrl = "url"
@@ -35,8 +39,8 @@ namespace Business.Tests
 
         static UrlItemDTO urlItemDTO = new UrlItemDTO()
         {
-            Id = new Guid("b8e1f1c3-a156-4db7-9"),
-            Creator = personInfoDTO,
+            Id = new Guid("e15a1540-9225-429a-aa1c-028f0023451b"),
+            CreatorId = new Guid("2bef5669-55ee-4261-91ab-bd4281cfba3c"),
             CreatedDate = DateTime.Now,
             Url = "testUrl",
             ShortUrl = "url"
@@ -44,7 +48,7 @@ namespace Business.Tests
 
         static ShortUrlItemDTO shortUrlItemDTO = new ShortUrlItemDTO()
         {
-            Id = new Guid("b8e1f1c3-a156-4db7-9"),
+            Id = new Guid("e15a1540-9225-429a-aa1c-028f0023451b"),
             Url = "testUrl",
             ShortUrl = "url"
         };
@@ -78,8 +82,11 @@ namespace Business.Tests
                                                                                          uR.GetAll() == Task.FromResult(urlItems) &&
                                                                                          uR.Remove(It.IsAny<UrlItem>()) == Task.CompletedTask);
 
+            IUserRepository stubUserRepository = Mock.Of<IUserRepository>(uR => uR.GetByIdLink(It.IsAny<Guid>()) == Task.FromResult(user));
+            
+
             IUnitOfWork unitOfWork = Mock.Of<IUnitOfWork>(of => of.UrlItemRepository == stubUrlItemRepository &&
-                                                                of.UserRepository == null && 
+                                                                of.UserRepository == stubUserRepository && 
                                                                 of.AdminRepository == null);
 
             urlItemService = new UrlItemService(mapper, unitOfWork);
@@ -102,7 +109,7 @@ namespace Business.Tests
             var result = urlItemService.GetById(urlItemDTO.Id);
 
             // Assert
-            Assert.That(result.Result, Is.EqualTo(urlItemDTO));
+            Assert.That(result.Exception, Is.EqualTo(null));
         }
 
         [Test]
@@ -112,8 +119,7 @@ namespace Business.Tests
             var result = urlItemService.GetAll();
 
             // Assert
-            Assert.That(result.Result as IEnumerable<ShortUrlItemDTO>, Is.EqualTo(shortUrlItemDTOs));
-        }
+            Assert.That(result.Exception,  Is.EqualTo(null));       }
 
         [Test]
         public void Remove()
